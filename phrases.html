@@ -407,7 +407,7 @@ function renderGame() {
   const lvl = s.level;
   const q = s.qs[s.qIndex];
   const progress = (s.qIndex / lvl.questions) * 100;
-  const toHi = s.dir === "nat";
+  const toHi = s.dir === "hi";
 
   let html = `
     <div class="topbar">
@@ -417,7 +417,7 @@ function renderGame() {
     </div>
     <div class="prog-bar"><div class="prog-fill" id="prog" style="width:${progress}%"></div></div>
     <div class="word-card">
-      <div class="direction">${toHi ? t("dir_nat_short", { l: LANG_NAMES[lang] }) : t("dir_hi_short", { l: LANG_NAMES[lang] })} · ${s.qIndex + 1} / ${lvl.questions}</div>
+      <div class="direction">${toHi ? t("dir_hi_short", { l: LANG_NAMES[lang] }) : t("dir_nat_short", { l: LANG_NAMES[lang] })} · ${s.qIndex + 1} / ${lvl.questions}</div>
       <div class="word-big dev">${toHi ? q.word.hi : q.word[lang]}</div>
       ${toHi ? `<div class="word-tran">${q.word.tr}</div>` : ""}
       <div class="word-topic"><span class="tag">${topicOf(q.word) === "Все темы" ? t("all_topics") : tn(topicOf(q.word))}</span></div>
@@ -425,7 +425,7 @@ function renderGame() {
     </div>
     <div class="answers">`;
   q.options.forEach((opt, i) => {
-    const label = toHi ? opt.hi : opt[lang];
+    const label = toHi ? opt[lang] : opt.hi;
     html += `<button class="answer" id="ans${i}" onclick="answer(${i})">${label}</button>`;
   });
   html += `</div>
@@ -466,7 +466,7 @@ function resolve(pickedIndex) {
   const picked = typeof pickedIndex === "number" ? q.options[pickedIndex] : null;
   const correct = q.word;
   const ok = picked && picked.hi === correct.hi;
-  const toHi = s.dir === "nat";
+  const toHi = s.dir === "hi";
 
   q.options.forEach((opt, idx) => {
     const el = document.getElementById("ans" + idx);
@@ -486,7 +486,7 @@ function resolve(pickedIndex) {
     s.lives--;
     s.streak = 0;
     fb.className = "feedback no";
-    const shown = toHi ? `${correct.hi} (${correct.tr})` : correct[lang];
+    const shown = toHi ? correct[lang] : `${correct.hi} (${correct.tr})`;
     fb.innerHTML = picked
       ? `${t("wrong")} <b>${shown}</b>`
       : `${t("timeout")} <b>${shown}</b>`;
