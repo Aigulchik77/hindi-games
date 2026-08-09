@@ -435,6 +435,7 @@ function renderGame() {
     <div class="word-card">
       <div class="direction">${toHi ? t("dir_nat_short", { l: LANG_NAMES[lang] }) : t("dir_hi_short", { l: LANG_NAMES[lang] })} · ${s.qIndex + 1} / ${lvl.questions}</div>
       <div class="word-big dev">${toHi ? q.word.hi : q.word[lang]}</div>
+      ${toHi ? `<div class="word-tran">${q.word.tr}</div>` : ""}
       <div class="word-topic"><span class="tag">${topicOf(q.word) === "Все темы" ? t("all_topics") : tn(topicOf(q.word))}</span></div>
       ${lvl.time ? `<div class="timer"><div class="timer-fill" id="timer"></div></div>` : ""}
     </div>
